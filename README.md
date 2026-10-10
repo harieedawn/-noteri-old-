@@ -52,6 +52,9 @@ Tài liệu này dành cho người và AI tiếp tục phát triển. Đọc h�
 - Màn hình chính: lưới 1 đến 5 cột chụm ngón để đổi, mỗi thư mục nhớ mức riêng; mục có thể thu gọn. Không có mục "Gần đây". Thư mục lồng nhau, có biểu tượng riêng.
 - Giọng văn trong "Giới thiệu" và "Có gì mới": chuyên nghiệp, liệt kê gạch đầu dòng, chỉ nêu đúng điều đã thay đổi. Không khoa trương.
 
+- Thanh công cụ: chọn Con trỏ thì thu gọn còn một nút ở giữa (chạm lại để mở rộng). Khi bảng của công cụ (bút, tẩy, sơ đồ) đang mở, chạm vào trang chỉ đóng bảng, không vẽ.
+- Tạo nút sơ đồ hoặc hộp chữ rồi thoát/đóng bàn phím mà chưa nhập gì thì hủy việc tạo (không để lại nút rỗng).
+
 ## Lỗi đã từng mắc (đừng lặp lại)
 - Dùng đơn vị dp cho phần tử trong trang trong khi phép toán dùng px làm trang lệch góc. Mọi thứ trong trang dùng đơn vị trang.
 - Gắn `pointerInput`/handler vào `transform` làm khởi động lại mỗi khung hình. Handler đọc `S.tr` trực tiếp.
