@@ -156,13 +156,55 @@ body::before{display:none!important}.lg{display:none}
 #list[data-n="4"] .doc,#list[data-n="5"] .doc{padding:5px 5px 3px;border-radius:14px}
 #list[data-n="4"] .mb,#list[data-n="5"] .mb{width:24px;height:24px}#list[data-n="5"] .mb svg,#list[data-n="5"] .fi{display:none}
 #lk.on{color:var(--pr)}
-#splash{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;background:var(--bg,#F6F0E6);transition:opacity .35s ease,transform .35s ease;--ink:var(--tx,#2E2822);--acc:var(--pr,#C4673F)}
+#splash{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;overflow:hidden;background:var(--bg,#F6F0E6);transition:opacity .35s ease,transform .35s ease;--ink:var(--tx,#2E2822);--acc:var(--pr,#C4673F);--u:min(66vw,44vh,300px)}
 #splash.hide{opacity:0;transform:scale(1.04);pointer-events:none}
-#splash svg{width:min(78vw,340px);max-height:60vh;height:auto;overflow:visible}
-#splash tspan{fill:transparent;stroke:var(--ink);stroke-width:1.6;stroke-dasharray:260;stroke-dashoffset:260;animation:spDraw .7s cubic-bezier(.5,0,.2,1) forwards,spFill .4s ease forwards;animation-delay:calc(var(--i)*.1s),calc(var(--i)*.1s + .55s)}
-@keyframes spDraw{to{stroke-dashoffset:0}}@keyframes spFill{to{fill:var(--ink);stroke-width:0}}
-#splash .ul{fill:none;stroke:var(--acc);stroke-width:5;stroke-linecap:round;stroke-dasharray:300;stroke-dashoffset:300;animation:spDraw .5s cubic-bezier(.5,0,.2,1) 1s forwards}
-@media(prefers-reduced-motion:reduce){#splash tspan,#splash .ul{animation-duration:.01s!important;animation-delay:0s!important}}
+#splash.v2{clip-path:circle(150% at 50% 46%)}
+#splash.v2.hide{opacity:1;transform:none;clip-path:circle(0% at 50% 46%);transition:clip-path .55s var(--ez)}
+#splash:not(.go) .s-box{visibility:hidden}
+#splash .s-box{display:flex;flex-direction:column;align-items:center;width:var(--u)}
+#splash .s-art{width:var(--u);height:var(--u);overflow:visible}
+#splash .s-art *{transform-box:fill-box;transform-origin:50% 50%}
+#splash .s-art .s-pa,#splash .s-art .s-pw{transform-box:view-box}
+#splash .s-art .s-pa{transform-origin:245px 160px}
+#splash .s-art .s-pw{transform-origin:297px 321px}
+#splash .s-bd{fill:var(--sa)}
+#splash .s-rg{fill:none;stroke:var(--acc);stroke-width:3;opacity:0}
+#splash .s-gl,#splash .s-sq,#splash .s-or,#splash .s-zl{stroke-dasharray:1 2}
+#splash .s-wd{display:flex;justify-content:center;margin-top:calc(var(--u)*-.03);padding-left:.04em;font-family:var(--ff);font-weight:700;font-size:calc(var(--u)*.2);line-height:1;letter-spacing:.04em;color:var(--ink)}
+#splash .s-ul{font-style:normal}
+#splash .s-l{position:relative;display:block;font-weight:inherit}
+#splash .s-l span{display:block;transform-origin:50% 0}
+#splash .s-ul{display:block;width:calc(var(--u)*.34);height:calc(var(--u)*.016);margin-top:calc(var(--u)*.035);border-radius:99px;background:var(--acc)}
+@keyframes spPop{from{scale:0;opacity:0}}
+@keyframes spDash{from{stroke-dashoffset:1}}
+#splash.v2.go .s-bd{animation:spPop .6s var(--sp) both}
+#splash.v2.go .s-body,#splash.v2.go .s-flap,#splash.v2.go .s-sl,#splash.v2.go .s-sr,#splash.v2.go .s-tab,#splash.v2.go .s-pk,#splash.v2.go .s-pen,#splash.v2.go .s-zp{animation:a2p .55s var(--sp) both;animation-delay:var(--d,.3s)}
+#splash.v2 .s-body{--d:.3s;--ty:56px;transform-origin:50% 100%}
+#splash.v2 .s-flap{--d:.38s;--ty:-56px}
+#splash.v2 .s-sl{--d:.46s;--tx:34px}
+#splash.v2 .s-sr{--d:.46s;--tx:-34px}
+#splash.v2 .s-tab{--d:.54s;--ty:16px}
+#splash.v2 .s-pk{--d:.54s;--ty:30px}
+#splash.v2 .s-pen{--d:.62s;--ty:44px;--r:-24deg}
+#splash.v2 .s-zp{--d:.72s}
+#splash.v2.go .s-zl{animation:spDash .35s ease-out .68s both}
+#splash.v2.go .s-pa{animation:a2a .8s var(--sp) .9s both}
+#splash.v2.go .s-gl{animation:spDash .3s ease-out 1.1s both}
+#splash.v2.go .s-sq{animation:spDash .6s cubic-bezier(.5,0,.2,1) 1.25s both}
+#splash.v2.go .s-or{animation:spDash .35s ease-out 1.8s both}
+#splash.v2.go .s-pw{animation:a2w .45s ease-in-out 1.3s 2 both}
+#splash.v2.go .s-art{animation:a2h .55s ease-out 1.95s both}
+#splash.v2.go .s-rg{animation:a2g .7s ease-out 1.95s both}
+#splash.v2 .s-l{overflow:hidden;margin:-.05em 0;padding:.05em 0}
+#splash.v2.go .s-l span{transform-origin:0 100%;animation:a2l .7s cubic-bezier(.2,.9,.25,1.08) both;animation-delay:calc(1.4s + var(--i)*.06s)}
+#splash.v2.go .s-ul{animation:a2u .6s var(--sp) 2.05s both}
+@keyframes a2p{from{opacity:0;scale:.5;rotate:var(--r,0deg);translate:var(--tx,0px) var(--ty,0px)}}
+@keyframes a2a{from{opacity:0;translate:0 120px;rotate:-5deg}}
+@keyframes a2w{0%,100%{rotate:0deg}25%{rotate:-6deg}50%{rotate:3deg}75%{rotate:-5deg}}
+@keyframes a2h{0%{translate:0 0}35%{translate:0 -12px}100%{translate:0 0}}
+@keyframes a2g{0%{opacity:.7;scale:1}100%{opacity:0;scale:1.25}}
+@keyframes a2l{from{translate:0 110%;rotate:8deg}}
+@keyframes a2u{from{opacity:0;scale:0 1}}
 .thg{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:10px 0 4px;animation:fd .3s both}
 .thp{aspect-ratio:1;border-radius:18px;position:relative;border:2px solid var(--o);padding:0;overflow:hidden}
 .thp b{position:absolute;left:14%;top:14%;width:36%;height:22%;border-radius:8px;background:var(--p)}
@@ -211,8 +253,12 @@ header{padding-top:max(6px,env(safe-area-inset-top));padding-bottom:6px}
 #tools.nt,#tools.nt .ib{transition:none!important}
 @media(max-height:520px) and (orientation:landscape){#tsn{top:calc(50px + env(safe-area-inset-top));width:42px;height:42px}}
 </style></head><body>
-<div id="splash" aria-hidden="true"><svg viewBox="0 0 300 120"><text x="150" y="70" text-anchor="middle" font-family="'Google Sans',system-ui,sans-serif" font-weight="700" font-size="58" letter-spacing="1"><tspan style="--i:0">N</tspan><tspan style="--i:1">O</tspan><tspan style="--i:2">T</tspan><tspan style="--i:3">E</tspan><tspan style="--i:4">R</tspan><tspan style="--i:5">I</tspan></text><path class="ul" d="M62 94 C 110 78, 190 110, 240 88"/></svg></div>
-<script>(function(){var s=document.getElementById('splash');if(!s)return;function bye(){if(s.__d)return;s.__d=1;s.classList.add('hide');setTimeout(function(){s.remove()},420)}setTimeout(bye,2300);s.addEventListener('click',bye)})()</script>
+<div id="splash" class="v2" aria-hidden="true"><div class="s-box"><svg class="s-art" viewBox="0 0 512 512"><circle class="s-bd" cx="256" cy="256" r="183"/><circle class="s-rg" cx="256" cy="256" r="183"/><g class="s-pa"><g transform="translate(165 101) rotate(-7.9)"><rect width="161" height="150" rx="5" fill="#FFFDF8" stroke="#DCD2BF" stroke-width="3"/><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path class="s-gl" pathLength="1" d="M22 18H118" stroke="#D9CDB8" stroke-width="4"/><path class="s-sq" pathLength="1" d="M26 40C32 24 40 24 44 37S54 48 60 36S72 24 76 37S88 46 94 34S106 26 112 36S124 44 130 34S140 29 146 32" stroke="#2E2822" stroke-width="5"/><path class="s-gl" pathLength="1" d="M22 58H78" stroke="#D9CDB8" stroke-width="4"/><path class="s-or" pathLength="1" d="M31 71L56 66L65 70L85 63" stroke="#C4673F" stroke-width="4"/></g></g></g><g class="s-fx"><g class="s-fy"><g class="s-bag"><rect class="s-body" x="147" y="173" width="217" height="236" rx="58" fill="#C4673F"/><path class="s-flap" d="M147 268V231A58 58 0 0 1 205 173H306A58 58 0 0 1 364 231V268Q256 346 147 268Z" fill="#AE5733"/><rect class="s-sl" x="126" y="302" width="35" height="82" rx="17" fill="#AE5733"/><rect class="s-sr" x="350" y="302" width="35" height="82" rx="17" fill="#AE5733"/><g class="s-tab"><rect x="243" y="288" width="29" height="32" rx="9" fill="#E2A93B"/><circle cx="257" cy="303" r="4.5" fill="#C4673F"/></g><g class="s-pen"><g class="s-pw" transform="translate(297 321) rotate(19)"><path d="M-14 14V-70H14V14Z" fill="#E2A93B"/><path d="M-14-70H14L0-104Z" fill="#F1D9B0"/><path d="M-5.4-91H5.4L0-104Z" fill="#2E2822"/></g></g><rect class="s-pk" x="177" y="321" width="157" height="77" rx="38" fill="#6E8F76"/><path class="s-zl" pathLength="1" d="M194 344H298" fill="none" stroke="#FFFDF8" stroke-width="5" stroke-linecap="round"/><rect class="s-zp" x="302" y="337" width="24" height="23" rx="6" fill="#E2A93B"/></g></g></g></svg><div class="s-wd"><b class="s-l" style="--i:0"><span>N</span></b><b class="s-l" style="--i:1"><span>O</span></b><b class="s-l" style="--i:2"><span>T</span></b><b class="s-l" style="--i:3"><span>E</span></b><b class="s-l" style="--i:4"><span>R</span></b><b class="s-l" style="--i:5"><span>I</span></b></div><i class="s-ul"></i></div></div>
+<script>(function(){var s=document.getElementById('splash');if(!s)return;
+function bye(){if(s.__d)return;s.__d=1;s.classList.add('hide');setTimeout(function(){s.remove()},600)}
+function go(){if(s.__g)return;s.__g=1;s.classList.add('go');setTimeout(bye,3000)}
+s.addEventListener('click',bye);
+try{Promise.race([document.fonts.load('700 1em "Google Sans"'),new Promise(function(r){setTimeout(r,700)})]).then(go,go)}catch(e){go()}})()</script>
 <div id="home"></div>
 <div id="ed" hidden>
  <div id="top"><button class="ib" id="bk" aria-label="Quay lại"></button><button id="ttl"></button><button class="ib" id="un" aria-label="Hoàn tác"></button><button class="ib" id="re" aria-label="Làm lại"></button><button class="ib" id="lk" aria-label="Khóa trang vào giữa"></button><button class="ib" id="ft" aria-label="Vừa khung"></button></div>
@@ -224,7 +270,7 @@ header{padding-top:max(6px,env(safe-area-inset-top));padding-bottom:6px}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
 'use strict';
-const VER='1.9.0',SW=1200,$=s=>document.querySelector(s);
+const VER='1.10.0',SW=1200,$=s=>document.querySelector(s);
 const h=(t,a,...c)=>{const e=document.createElement(t);if(a)for(const k in a){if(k==='class')e.className=a[k];else if(k==='style')e.style.cssText=a[k];else if(k in e)e[k]=a[k];else e.setAttribute(k,a[k])}e.append(...c.flat().filter(x=>x!=null));return e};
 const IC={sel:'<path d="M7 3.5v14.2l3.6-3.4 2.4 5.2 2.4-1.1-2.4-5.1 5-.4z"/>',pen:'<path d="M4 20l1.2-4.6L16.6 4a2.1 2.1 0 0 1 3 0l.4.4a2.1 2.1 0 0 1 0 3L8.6 18.8z"/><path d="M14.5 6.2l3.3 3.3"/>',hl:'<path d="M14.5 4.5l5 5-8.2 8.2-5-5z"/><path d="M6.3 12.7L4.5 18.5l1 1 5.8-1.8"/><path d="M13.5 20.5H20"/>',er:'<path d="M4.6 14.4l8.5-8.5a2 2 0 0 1 2.8 0l3.3 3.3a2 2 0 0 1 0 2.8L12 19.4H8.6z"/><path d="M8.5 10l5.9 5.9"/><path d="M13 20.5h7"/>',tx:'<path d="M5 7V5h14v2"/><path d="M12 5v14"/><path d="M9 19h6"/>',im:'<rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="9" cy="10" r="1.5"/><path d="M3 17l5-5 4 4 3-3 6 5"/>',nt:'<path d="M5 4h14v10l-6 6H5z"/><path d="M13 20v-6h6"/>',un:'<path d="M9 5L4 10l5 5"/><path d="M4 10h10a5 5 0 0 1 0 10h-3"/>',re:'<path d="M15 5l5 5-5 5"/><path d="M20 10H10a5 5 0 0 0 0 10h3"/>',ft:'<path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/>',bk:'<path d="M15 5l-7 7 7 7"/>',pl:'<path d="M12 5v14M5 12h14"/>',mo:'<circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/>',st:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
 se:'<circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>',tr:'<path d="M4 7h16"/><path d="M9 7V4.5h6V7"/><path d="M6.5 7l1 13h9l1-13"/><path d="M10 11v5M14 11v5"/>',ed:'<path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>',fo:'<path d="M3.5 7.5a2 2 0 0 1 2-2H9l2 2.5h7.5a2 2 0 0 1 2 2v7.5a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/>',fm:'<path d="M3.5 7.5a2 2 0 0 1 2-2H9l2 2.5h7.5a2 2 0 0 1 2 2v7.5a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/><path d="M9 13.5h6M12.5 11l2.5 2.5-2.5 2.5"/>',fp:'<path d="M3.5 7.5a2 2 0 0 1 2-2H9l2 2.5h7.5a2 2 0 0 1 2 2v7.5a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/><path d="M12 11v5M9.5 13.5h5"/>',
@@ -330,6 +376,7 @@ function settings(){const b=h('div'),vc=(v,L)=>h('div',{class:'vc'},h('b',{textC
   tgl('Chỉ bút được vẽ sau khi đã dùng bút','stylus',rs,'pen'),tgl('Rung nhẹ','hap',rs,'vb'),tgl('Khóa trang vào giữa khi thả tay','lk',rs,'lk'),
   h('div',{class:'about'},h('div',{},h('b',{textContent:'NOTERI'}),h('ul',{},['Phiên bản '+VER+'.','Ghi chú, vẽ tay, chú thích PDF và sơ đồ tư duy.','Dữ liệu lưu trên thiết bị (IndexedDB); không tài khoản, không quảng cáo, không thu thập dữ liệu.','Cần kết nối mạng ở lần dùng đầu tiên để tải thư viện đọc PDF.'].map(t=>h('li',{textContent:t}))))),
   h('div',{class:'lb',innerHTML:ic('spk',18)+'Có gì mới'}),
+  vc('1.10.0',['Thay hoạt ảnh mở đầu bằng bản mới dùng biểu tượng ứng dụng: biểu tượng lắp ráp, tờ giấy được rút ra và viết nét bút, chữ NOTERI hiện lên rồi màn hình thu về dạng vòng tròn.','Hoạt ảnh bắt đầu sau khi phông Google Sans tải xong (chờ tối đa 0,7 giây); chạm vào màn hình để bỏ qua.']),
   vc('1.9.0',['Toàn bộ ứng dụng dùng phông Google Sans, nhúng sẵn trong ứng dụng nên vẫn chạy khi không có mạng; hỗ trợ đầy đủ tiếng Việt.','Chữ trong trang (hộp chữ, ghi chú, nút sơ đồ, tên nhóm) dùng cùng phông; vị trí hít chữ vào dòng kẻ được tính theo đúng số đo của phông.','Thanh công cụ có hiệu ứng khi chọn Con trỏ: các nút thu dần về nút Con trỏ, mở rộng lại thì lần lượt hiện ra.']),
   vc('1.8.0',['Mũi tên sơ đồ tư duy: nét mảnh hơn, đầu mũi tên nhỏ gọn theo độ dày, góc của đường gấp khúc được bo tròn.','Chỉnh độ dày mũi tên: chọn một mũi tên để dùng thanh trượt; bảng Sơ đồ tư duy đặt độ dày mặc định cho mũi tên mới.','Nhóm: kéo một nút vào trong nút khác sẽ có gợi ý nhóm, thả tay để tạo nhóm rồi đặt tên. Nhóm hiện khung mờ bao quanh, tên nằm phía trên.','Kéo viền hoặc tên nhóm để di chuyển cả nhóm; nhấn đúp vào tên để đổi tên; kéo tay nắm góc dưới phải để đổi kích thước.','Hộp chữ, ghi chú, nút sơ đồ và tên nhóm đều cần nhấn đúp để sửa chữ; chạm một lần chỉ chọn.','Công cụ Chữ có nút hít chữ vào dòng kẻ ngang: bật thì chữ nằm trên đường kẻ của trang (kẻ ngang hoặc ô vuông), hít nhẹ và tức thì; tắt thì như cũ.']),
   vc('1.7.1',['Sửa lệch vùng tô sáng của công cụ đang chọn trên thanh công cụ; các nút có kích thước đồng đều.','Chọn công cụ Con trỏ thu thanh công cụ còn một nút ở giữa; chạm lại nút đó để mở rộng.','Đóng bàn phím hoặc thoát khi đang tạo nút sơ đồ hoặc hộp chữ mà chưa nhập gì thì hủy việc tạo đó.','Khi bảng bút, tẩy hoặc sơ đồ tư duy đang mở, chạm vào trang chỉ đóng bảng, không tạo nét vẽ.']),
