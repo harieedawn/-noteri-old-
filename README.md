@@ -62,6 +62,12 @@ Tài liệu này dành cho người và AI tiếp tục phát triển. Đọc h�
 - Tạo nút sơ đồ hoặc hộp chữ rồi thoát/đóng bàn phím mà chưa nhập gì thì hủy việc tạo (không để lại nút rỗng). Nhóm mới tạo cũng vậy: tên bắt buộc.
 - Mọi loại chữ trong trang (hộp chữ, ghi chú, nút, tên nhóm) chỉ sửa bằng nhấn đúp. Hít chữ vào kẻ phải nhẹ, chỉ theo trục ngang của dòng kẻ, không hít mạnh.
 
+## Chuyển động
+- Dùng thuộc tính riêng `scale`, `translate`, `rotate`, `opacity` trong keyframes để không đè lên `transform` đặt inline (đối tượng trong trang dùng `transform` để xoay/lật).
+- Hoạt ảnh trên phần tử tồn tại lâu dùng `animation-fill-mode: backwards` để tránh giữ giá trị cuối.
+- Phần tử mới trong trang chỉ bật lên khi `S.ready` (sau khi mở trang xong); mũi tên sơ đồ vẽ dần theo `ebp()`; vẽ lại theo `S.eba`.
+- `prefers-reduced-motion` tắt toàn bộ bằng một luật toàn cục. Không thêm hoạt ảnh lặp lại mỗi lần dựng lại danh sách (gây nháy khi gõ tìm kiếm).
+
 ## Lỗi đã từng mắc (đừng lặp lại)
 - Dùng đơn vị dp cho phần tử trong trang trong khi phép toán dùng px làm trang lệch góc. Mọi thứ trong trang dùng đơn vị trang.
 - Gắn `pointerInput`/handler vào `transform` làm khởi động lại mỗi khung hình. Handler đọc `S.tr` trực tiếp.
