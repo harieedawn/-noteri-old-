@@ -20,8 +20,8 @@ Tài liệu này dành cho người và AI tiếp tục phát triển. Đọc h�
 - `d:<id>`: JSON chuỗi `{ratio,pattern,sp,paper,strokes,objs,edges}`. `p:<id>`: ArrayBuffer PDF gốc (không bao giờ sửa).
 - Cài đặt người dùng: `localStorage` `noteri.t` (đối tượng `T`), `noteri.col`, `noteri.den`.
 - Nét vẽ: `{t:'p'|'h',c,w,p:[x,y,...],q:[hệ số bề rộng theo điểm]|null}`. Tọa độ theo đơn vị trang (cạnh dài 2400). Nét cũ không có `q` vẫn phải đọc được.
-- `objs` (đối tượng, thứ tự = lớp): `img`, `text`, `note`, `node`. Trường chung `{id,k,x,y,w,h,r,txt,fs,c,c2,op,lock}`. Ảnh lưu `src` (dataURL) nhưng `src` bị loại khỏi snapshot lịch sử (xem `rep`).
-- `edges` (mũi tên sơ đồ): `{id,a,b,st:'curve'|'line'|'elbow',ar:0|1,c?}`; `a`,`b` là id của `node`. Điểm nối được tính mỗi khung hình từ hình học node, không lưu.
+- `objs` (đối tượng, thứ tự = lớp): `img`, `text`, `note`, `node`, `group`. Trường chung `{id,k,x,y,w,h,r,txt,fs,c,c2,op,lock}`. Ảnh lưu `src` (dataURL) nhưng `src` bị loại khỏi snapshot lịch sử (xem `rep`). `text` có thêm `sn:1` khi bật hít chữ vào dòng kẻ. `group` dùng `txt` làm tên nhóm, không lưu danh sách thành viên (xem mục Sơ đồ tư duy).
+- `edges` (mũi tên sơ đồ): `{id,a,b,st:'curve'|'line'|'elbow',ar:0|1,w?,c?}`; `w` là độ dày theo đơn vị trang (thiếu thì dùng `EW0`=6); `a`,`b` là id của `node`. Điểm nối được tính mỗi khung hình từ hình học node, không lưu.
 - Tương thích ngược là bắt buộc: không đổi tên trường, không làm hỏng trang cũ. Muốn đổi định dạng thì đọc được cả hai.
 
 ## Kiến trúc trình soạn thảo
@@ -37,9 +37,14 @@ Tài liệu này dành cho người và AI tiếp tục phát triển. Đọc h�
 - Công cụ `mm` nằm trên thanh công cụ. Nó là chế độ con của công cụ Chọn (`S.mm=true`, `S.tool==='select'`), nên chọn, kéo, đổi cỡ, nhân bản, khóa đều dùng chung mã với đối tượng khác. Nhấn lần nữa (hoặc giữ) để mở bảng chế độ.
 - Chế độ "Thêm nút": chạm chỗ trống tạo nút và vào gõ chữ. Chế độ "Nối nút": kéo từ nút này sang nút khác để tạo mũi tên. Khi nút được chọn có 4 dấu cộng ở các cạnh: chạm = thêm nút con theo hướng đó; kéo sang nút khác = nối; kéo ra chỗ trống = tạo nút mới và nối.
 - Nút có `h` tự co theo nội dung; chỉ đổi độ rộng (tay nắm góc dưới phải), không xoay. Xóa nút xóa luôn mũi tên liên quan. Mũi tên có thể chọn bằng cách chạm gần đường; thanh thao tác đổi kiểu, đầu mũi tên, xóa.
-- "Sắp xếp tự động": bố cục cây trái sang phải (`mmLayout`), một bước hoàn tác.
+- Mũi tên (`mmDraw`): nét mảnh, độ dày `w` (2 đến 24, đơn vị trang). Đầu mũi tên tỉ lệ theo `w` (`max(20, 3.8w)`), đường dừng ở gốc đầu mũi tên; đường gấp khúc bo góc. Chọn mũi tên thì thanh thao tác có thanh trượt độ dày; bảng Sơ đồ tư duy có thanh trượt đặt độ dày mặc định cho mũi tên mới (`T.mm.w`).
+- Nhóm (kiểu Obsidian), obj `k:'group'`: khung mờ bo góc, tên nằm phía trên (chip). Luôn nằm dưới cùng của `objs` (`gfix` sắp nhóm lớn xuống dưới nhóm nhỏ). Thành viên được tính theo hình học: đối tượng có tâm nằm trong khung (`grpKids`), không lưu danh sách. Chỉ viền (`grpHit`) và nhãn tên bắt được chạm; vùng trong để trống để vẫn tạo nút, kéo, cuộn bên trong nhóm. Kéo viền/tên = di chuyển cả nhóm; nhấn đúp vào tên = đổi tên; tay nắm góc dưới phải = đổi kích thước (không xoay, không nhân bản, không đổi lớp). Xóa nhóm chỉ xóa khung, giữ nút.
+- Tạo nhóm: kéo một nút (chế độ Chọn hoặc Thêm nút) sao cho tâm của nó nằm trong nút khác; `ghUpd` bật `S.gh` và `ghDraw` vẽ gợi ý (khung dự kiến nét đứt + vòng quanh nút đích nhấp nháy nhẹ, không có chữ). Bỏ ra ngoài thì gợi ý tắt. Thả tay trong lúc có gợi ý: `objDrop` tạo nhóm (`mkGroup`, nút được xếp cạnh nút đích bởi `grpLay` để không chồng) rồi vào nhập tên. Tên bắt buộc: để trống thì hủy cả thao tác kéo (về trạng thái trước khi kéo). Đích đang nằm sẵn trong nhóm thì không gợi ý; thả nút vào trong nhóm chỉ mở rộng khung nếu nút lòi ra ngoài (`grpGrow`). Cả thao tác là một bước hoàn tác.
+- Sửa chữ nhất quán: hộp chữ, ghi chú, nút sơ đồ và tên nhóm đều phải nhấn đúp mới sửa; chạm một lần chỉ chọn (kể cả khi đang ở công cụ Chữ hoặc Ghi chú; ảnh thì công cụ Chữ vẫn tạo chữ đè lên ảnh).
+- Hít chữ vào dòng kẻ ngang: nút `#tsn` (góc phải trên) chỉ hiện khi chọn công cụ Chữ; trạng thái lưu ở `T.sn`; mờ đi nếu trang không có kẻ ngang/ô vuông (PDF và giấy trắng thì không có tác dụng). Chữ tạo ra khi đang bật có `sn:1`: đường cơ sở dòng đầu đặt lên đường kẻ gần nhất (`lnSnap`), chiều cao dòng là bội của khoảng kẻ (`lnLH`) nên các dòng sau cũng nằm trên kẻ. Khi kéo chữ có `sn` chỉ hít nhẹ: ngưỡng tối đa 22% khoảng kẻ và không quá 11px màn hình. Chỉ hít theo trục dọc của trang (kẻ ngang); không hít vào đường kẻ dọc của ô vuông; việc căn giữa trang và căn theo đối tượng khác vẫn là `snap()` cũ.
+- "Sắp xếp tự động": bố cục cây trái sang phải (`mmLayout`), một bước hoàn tác. Chưa cập nhật khung nhóm theo vị trí mới của nút.
 - Có thể vẽ tay, thêm mũi tên tự do bằng bút thường, hoặc trộn với sơ đồ trên cùng một trang. Không tách thành loại tài liệu riêng.
-- Chưa có: thu gọn nhánh, nhãn trên mũi tên, nhóm, kéo thả đổi cha, kiểu nút khác, xuất ảnh sơ đồ, vẽ nút/mũi tên trong ảnh xem trước.
+- Chưa có: thu gọn nhánh, nhãn trên mũi tên, màu nhóm, nhóm lồng nhau được kiểm thử kỹ, kéo thả đổi cha, kiểu nút khác, xuất ảnh sơ đồ, vẽ nút/mũi tên/nhóm trong ảnh xem trước.
 
 ## Quyết định của chủ dự án (không được đảo ngược nếu chưa hỏi)
 - Không dùng gradient làm nền hay nút (đường kẻ trang giấy dùng điểm dừng cứng là chấp nhận được). Không dùng hiệu ứng phát sáng (glow). Blur/kính mờ thì được.
@@ -53,7 +58,8 @@ Tài liệu này dành cho người và AI tiếp tục phát triển. Đọc h�
 - Giọng văn trong "Giới thiệu" và "Có gì mới": chuyên nghiệp, liệt kê gạch đầu dòng, chỉ nêu đúng điều đã thay đổi. Không khoa trương.
 
 - Thanh công cụ: chọn Con trỏ thì thu gọn còn một nút ở giữa (chạm lại để mở rộng). Khi bảng của công cụ (bút, tẩy, sơ đồ) đang mở, chạm vào trang chỉ đóng bảng, không vẽ.
-- Tạo nút sơ đồ hoặc hộp chữ rồi thoát/đóng bàn phím mà chưa nhập gì thì hủy việc tạo (không để lại nút rỗng).
+- Tạo nút sơ đồ hoặc hộp chữ rồi thoát/đóng bàn phím mà chưa nhập gì thì hủy việc tạo (không để lại nút rỗng). Nhóm mới tạo cũng vậy: tên bắt buộc.
+- Mọi loại chữ trong trang (hộp chữ, ghi chú, nút, tên nhóm) chỉ sửa bằng nhấn đúp. Hít chữ vào kẻ phải nhẹ, chỉ theo trục ngang của dòng kẻ, không hít mạnh.
 
 ## Lỗi đã từng mắc (đừng lặp lại)
 - Dùng đơn vị dp cho phần tử trong trang trong khi phép toán dùng px làm trang lệch góc. Mọi thứ trong trang dùng đơn vị trang.
@@ -80,4 +86,4 @@ Tài liệu này dành cho người và AI tiếp tục phát triển. Đọc h�
 - Tạo thư mục trong thư mục, nút quay lại điện thoại lùi từng cấp, xoay ngang.
 
 ## Hướng phát triển
-Thu gọn nhánh sơ đồ, nhãn mũi tên, xuất PNG/PDF, sao lưu/khôi phục, định dạng chữ Markdown, chọn vùng bằng lasso, bảng chọn đóng bằng nút quay lại điện thoại.
+Thu gọn nhánh sơ đồ, nhãn mũi tên, màu nhóm, xuất PNG/PDF, sao lưu/khôi phục, định dạng chữ Markdown, chọn vùng bằng lasso, bảng chọn đóng bằng nút quay lại điện thoại.
