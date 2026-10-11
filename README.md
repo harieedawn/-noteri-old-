@@ -12,13 +12,13 @@ Tài liệu này dành cho người và AI tiếp tục phát triển. Đọc h�
 - Dùng được một tay trên điện thoại (dọc và ngang), tablet có bút.
 
 ## Cấu trúc
-- `index.html`: toàn bộ ứng dụng (CSS, HTML, JS trong một file, không build). `sw.js`: service worker (stale-while-revalidate, đổi tên cache `noteri-vN` mỗi bản). `manifest.webmanifest`, `icon-192.png`, `icon-512.png`, `fonts/GoogleSans-var.woff` (Google Sans biến thiên, trục chữ đậm 400-700, đã cắt còn Latin + tiếng Việt, kèm `fonts/OFL.txt`). Thêm tệp tĩnh mới thì nhớ thêm vào danh sách `A` trong `sw.js`.
+- `index.html`: toàn bộ ứng dụng (CSS, HTML, JS trong một file, không build). `sw.js`: service worker (stale-while-revalidate, đổi tên cache `noteri-vN` mỗi bản; lưu sẵn pdf.js và worker từ cdnjs theo danh sách `X`, lỗi mạng khi cài thì bỏ qua). `manifest.webmanifest`, `icon-192.png`, `icon-512.png`, `fonts/GoogleSans-var.woff` (Google Sans biến thiên, trục chữ đậm 400-700, đã cắt còn Latin + tiếng Việt, kèm `fonts/OFL.txt`). Thêm tệp tĩnh mới thì nhớ thêm vào danh sách `A` trong `sw.js`.
 - Thư viện ngoài duy nhất: pdf.js 3.11.174 từ cdnjs (đọc PDF). Không thêm framework.
 - Hàm tiện ích: `h(tag,attrs,...children)` tạo DOM; `ic(name,size)` trả SVG; `IC` là bảng icon (nét 1.7, bo tròn); `$` = querySelector.
 
 ## Dữ liệu (IndexedDB `noteri`, store `k`)
 - `meta`: `{folders:[{id,name,color,ic,parent}],docs:[{id,name,type:'page'|'pdf',folder,updated,paper,ratio,txt,th,np,deleted}]}`. `txt` là văn bản chuẩn hóa để tìm kiếm không dấu; `th` là ảnh xem trước.
-- `d:<id>`: JSON chuỗi `{ratio,pattern,sp,paper,strokes,objs,edges}`. `p:<id>`: ArrayBuffer PDF gốc (không bao giờ sửa).
+- `d:<id>`: JSON chuỗi `{ratio,pattern,sp,paper,strokes,objs,edges}`. `p:<id>`: ArrayBuffer PDF gốc (không bao giờ sửa). `r:<id>`: mảng tỉ lệ cao/rộng của từng trang PDF, tính một lần ở lần nhập hoặc mở đầu tiên rồi dùng lại (bộ nhớ đệm, mất thì tính lại; chỉ lưu khi mọi trang đo được; xóa cùng tài liệu).
 - Cài đặt người dùng: `localStorage` `noteri.t` (đối tượng `T`), `noteri.col`, `noteri.den`.
 - Nét vẽ: `{t:'p'|'h',c,w,p:[x,y,...],q:[hệ số bề rộng theo điểm]|null}`. Tọa độ theo đơn vị trang (cạnh dài 2400). Nét cũ không có `q` vẫn phải đọc được.
 - `objs` (đối tượng, thứ tự = lớp): `img`, `text`, `note`, `node`, `group`. Trường chung `{id,k,x,y,w,h,r,txt,fs,c,c2,op,lock}`. Ảnh lưu `src` (dataURL) nhưng `src` bị loại khỏi snapshot lịch sử (xem `rep`). `text` có thêm `sn:1` khi bật hít chữ vào dòng kẻ. `group` dùng `txt` làm tên nhóm, không lưu danh sách thành viên (xem mục Sơ đồ tư duy).
@@ -30,9 +30,18 @@ Tài liệu này dành cho người và AI tiếp tục phát triển. Đọc h�
 - Thứ tự lớp: giấy/PDF/mũi tên (`c0`) -> đối tượng DOM -> nét vẽ + khung chọn (`c1`).
 - Một bộ cử chỉ duy nhất trên `#stage` (pointer events): hai ngón luôn pinch/pan với mọi công cụ; một ngón theo công cụ; bút (stylus) vẽ còn ngón tay cuộn; chống chạm nhầm lòng bàn tay.
 - Lịch sử hoàn tác: `touch()` chụp snapshot trước thay đổi, `commit()` đẩy vào ngăn xếp. Snapshot = `{s: mảng tham chiếu stroke, o: JSON objs (không src), e: JSON edges}`. Vì vậy stroke đã commit là bất biến (xóa từng phần tạo stroke mới, không sửa stroke cũ).
-- Hiệu năng: khi hơn 150 nét, các nét đã commit được cache vào bitmap lớn hơn màn hình 25% mỗi phía (`icBuild`/`icAdd`); chỉ dựng lại khi `S.inkV` đổi. PDF render lười, tối đa 2 trang cùng lúc, ngân sách 36 triệu điểm ảnh.
+- Hiệu năng: khi hơn 150 nét, các nét đã commit được cache vào bitmap lớn hơn màn hình 25% mỗi phía (`icBuild`/`icAdd`); chỉ dựng lại khi `S.inkV` đổi. PDF dựng lười bằng bộ lập lịch `pump()` (gọi mỗi khung hình từ `draw()`), xem mục "PDF dài và nặng" bên dưới.
 - Lưu: `dirty()` hẹn 800ms rồi `flush()`; cũng lưu khi ẩn trang. Ảnh xem trước tạo ở `flush(true)`.
 - Điều hướng: `history.pushState` cho mỗi cấp thư mục và khi mở trình soạn; nút quay lại của điện thoại lùi từng cấp, ở trang chủ mới thoát. Không thay đổi `cur` mà không đẩy history.
+
+## PDF dài và nặng
+- Bố cục: mọi trang PDF xếp dọc trong một thế giới; chiều cao từng trang lấy từ `pdfRat()` (có cache `r:<id>`). Vì nét vẽ gắn theo tọa độ thế giới nên bố cục không được đổi sau khi mở.
+- Mỗi `sheet` có `cv` (bản dựng đầy đủ, canvas) và `th` (ảnh thu nhỏ 240px, trang đầu 320px). `draw()` vẽ `cv`, không có thì vẽ `th`, không có nữa thì để trắng. Vùng nhìn thấy tìm bằng `shR()` (tìm nhị phân), số trang bằng `pgAt()`.
+- `pump(a,b)`: ưu tiên trang đang xem theo khoảng cách tới giữa màn hình, rồi dựng trước `PA`=2 trang phía hướng cuộn và 1 trang phía sau (chỉ khi cuộn chậm, chỉ dùng 1 trong `CN`=2 chỗ, độ rộng tối đa 1600px, không được làm vượt ngân sách). Cuộn nhanh (hơn 1px/ms) thì không bắt đầu việc mới; sau 120ms không di chuyển sẽ chạy lại. Đang chụm hai ngón thì không dựng lại trang đã có bản dựng (quyết định cũ vẫn giữ).
+- Trang trôi quá `PA`+2 so với vùng nhìn mà còn đang dựng thì `RenderTask.cancel()`; hủy kiểu này không tính là lỗi.
+- Bộ nhớ: `PB` điểm ảnh cho bản đầy đủ (36 triệu với máy 4GB hoặc không rõ, 20 đến 56 triệu theo `navigator.deviceMemory`), `THB`=25% của `PB` cho ảnh thu nhỏ. `evict()` bỏ bản đầy đủ của trang xa vùng nhìn nhất trước, không bao giờ bỏ trang đang xem. Trang đầu luôn giữ `th` để làm ảnh xem trước ở màn hình chính.
+- Bộ đọc pdf.js chạy trong worker và tích tụ bộ nhớ (phông, ảnh) qua các trang: `pdfClean()` gọi `pdf.cleanup()` sau mỗi 8 lượt dựng khi không có trang nào đang dựng (30 lượt nếu đang cuộn), và trong lúc dọn không bắt đầu việc mới, vì dọn giữa chừng làm trang đang dựng mất phông.
+- Mọi lời gọi vào worker (`getPage`, `cleanup`, nạp lại) đi qua `tmo()` có thời hạn. Hết hạn hoặc 3 lỗi liên tiếp thì `pdfReload()` nạp lại tài liệu từ `p:<id>` (tối thiểu cách nhau 15 giây); các bản dựng đã có giữ nguyên. Lỗi dựng thật (không phải hủy) giảm chất lượng trang đó (`lo`, tối thiểu 0.35) và thử lại có độ trễ tăng dần.
 
 ## Sơ đồ tư duy
 - Công cụ `mm` nằm trên thanh công cụ. Nó là chế độ con của công cụ Chọn (`S.mm=true`, `S.tool==='select'`), nên chọn, kéo, đổi cỡ, nhân bản, khóa đều dùng chung mã với đối tượng khác. Nhấn lần nữa (hoặc giữ) để mở bảng chế độ.
@@ -76,6 +85,8 @@ Tài liệu này dành cho người và AI tiếp tục phát triển. Đọc h�
 - Lưu `src` ảnh trong snapshot hoàn tác làm bộ nhớ phình và lag. Luôn loại `src` khỏi snapshot.
 - Chỉnh stroke đã commit tại chỗ làm hỏng hoàn tác. Tạo stroke mới.
 - Render lại PDF khi đang pinch gây giật. Hoãn đến khi thả tay.
+- Hàng đợi dựng PDF kẹt vĩnh viễn: worker bị hệ điều hành dừng thì `getPage` không bao giờ trả về, chiếm hết chỗ dựng và từ đó không trang nào tải nữa (xảy ra khi cuộn tới trang 40 đến 70 của tệp nặng). Mọi lời gọi vào worker phải có thời hạn và có đường tự nạp lại.
+- Để pdf.js tích tụ bộ nhớ qua hàng trăm trang mà không gọi `pdf.cleanup()`.
 - Thêm gradient/glow "cho đẹp". Chủ dự án đã bác bỏ nhiều lần.
 
 ## Quy trình phát hành (bắt buộc)
@@ -89,6 +100,7 @@ Tài liệu này dành cho người và AI tiếp tục phát triển. Đọc h�
 - Mở trang mới ở 5 tỉ lệ: nằm giữa màn hình. Pinch khi đang chọn bút. Vẽ, hoàn tác, làm lại.
 - Chèn ảnh lớn rồi kéo, đổi cỡ, xoay. Chạm công cụ Chữ tạo hộp chữ đúng chỗ chạm.
 - Nhập PDF nhiều trang: cuộn, zoom, vẽ ngoài lề, bật/tắt khóa trang, nhấn đúp giữ nguyên vị trí.
+- PDF hơn 100 trang (nên dùng tệp nặng, nhiều ảnh): cuộn nhanh tới trang 40, 70, 100 rồi quay về; dừng lại thì trang tải đủ, không có trang trắng vĩnh viễn. Đóng và mở lại: vào ngay (đã có cache tỉ lệ).
 - Sơ đồ tư duy: tạo nút, thêm con bằng dấu cộng, kéo nối hai nút, đổi kiểu mũi tên, sắp xếp tự động, hoàn tác từng bước, đóng mở lại vẫn còn.
 - Tạo thư mục trong thư mục, nút quay lại điện thoại lùi từng cấp, xoay ngang.
 
