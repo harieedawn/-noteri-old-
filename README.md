@@ -7,11 +7,12 @@ Tài liệu này dành cho người và AI tiếp tục phát triển. Đọc h�
 ## Mục tiêu sản phẩm
 - Cảm giác như GoodNotes / Notability: viết mượt, zoom mượt, không giật, không mất dữ liệu.
 - Giao diện phẳng, bo góc mọi nơi, kính mờ (blur) được phép, hiệu ứng nhẹ. Tiếng Việt.
+- Phông chữ toàn ứng dụng là Google Sans qua biến CSS `--ff` (kể cả chữ trong trang và chữ NOTERI ở màn hình mở đầu). Không viết `system-ui` hay tên phông cứng ở nơi khác; dùng `var(--ff)`. Đo chữ bằng canvas (`lnBase`) phải dùng cùng phông, và dựng lại khi phông tải xong (`document.fonts.ready`).
 - Chạy offline sau lần tải đầu. Không tài khoản, không quảng cáo, không gửi dữ liệu đi.
 - Dùng được một tay trên điện thoại (dọc và ngang), tablet có bút.
 
 ## Cấu trúc
-- `index.html`: toàn bộ ứng dụng (CSS, HTML, JS trong một file, không build). `sw.js`: service worker (stale-while-revalidate, đổi tên cache `noteri-vN` mỗi bản). `manifest.webmanifest`, `icon-192.png`, `icon-512.png`.
+- `index.html`: toàn bộ ứng dụng (CSS, HTML, JS trong một file, không build). `sw.js`: service worker (stale-while-revalidate, đổi tên cache `noteri-vN` mỗi bản). `manifest.webmanifest`, `icon-192.png`, `icon-512.png`, `fonts/GoogleSans-var.woff` (Google Sans biến thiên, trục chữ đậm 400-700, đã cắt còn Latin + tiếng Việt, kèm `fonts/OFL.txt`). Thêm tệp tĩnh mới thì nhớ thêm vào danh sách `A` trong `sw.js`.
 - Thư viện ngoài duy nhất: pdf.js 3.11.174 từ cdnjs (đọc PDF). Không thêm framework.
 - Hàm tiện ích: `h(tag,attrs,...children)` tạo DOM; `ic(name,size)` trả SVG; `IC` là bảng icon (nét 1.7, bo tròn); `$` = querySelector.
 
@@ -57,7 +58,7 @@ Tài liệu này dành cho người và AI tiếp tục phát triển. Đọc h�
 - Màn hình chính: lưới 1 đến 5 cột chụm ngón để đổi, mỗi thư mục nhớ mức riêng; mục có thể thu gọn. Không có mục "Gần đây". Thư mục lồng nhau, có biểu tượng riêng.
 - Giọng văn trong "Giới thiệu" và "Có gì mới": chuyên nghiệp, liệt kê gạch đầu dòng, chỉ nêu đúng điều đã thay đổi. Không khoa trương.
 
-- Thanh công cụ: chọn Con trỏ thì thu gọn còn một nút ở giữa (chạm lại để mở rộng). Khi bảng của công cụ (bút, tẩy, sơ đồ) đang mở, chạm vào trang chỉ đóng bảng, không vẽ.
+- Thanh công cụ: chọn Con trỏ thì thu gọn còn một nút ở giữa (chạm lại để mở rộng). Cả 8 nút luôn nằm trong DOM; thu gọn chỉ là thêm lớp `.cp` và CSS co độ rộng các nút còn lại về 0 (có hiệu ứng, nút Con trỏ nảy nhẹ; mở rộng thì các nút hiện lần lượt). Không dựng lại nút mỗi lần gọi `tools()`, nếu không sẽ mất hiệu ứng. Lần đầu mở trình soạn dùng lớp `.nt` để không chạy hiệu ứng. Khi bảng của công cụ (bút, tẩy, sơ đồ) đang mở, chạm vào trang chỉ đóng bảng, không vẽ.
 - Tạo nút sơ đồ hoặc hộp chữ rồi thoát/đóng bàn phím mà chưa nhập gì thì hủy việc tạo (không để lại nút rỗng). Nhóm mới tạo cũng vậy: tên bắt buộc.
 - Mọi loại chữ trong trang (hộp chữ, ghi chú, nút, tên nhóm) chỉ sửa bằng nhấn đúp. Hít chữ vào kẻ phải nhẹ, chỉ theo trục ngang của dòng kẻ, không hít mạnh.
 

@@ -1,20 +1,21 @@
 <!doctype html>
 <html lang="vi"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#F6F0E6"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon-192.png"><title>NOTERI</title>
+<meta name="theme-color" content="#F6F0E6"><link rel="preload" href="fonts/GoogleSans-var.woff" as="font" type="font/woff" crossorigin><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon-192.png"><title>NOTERI</title>
 <style>
-:root{--bg:#F6F0E6;--sf:#FFFAF1;--sa:#EDE4D3;--ol:#D9CDB8;--tx:#2E2822;--mu:#7B6F61;--pr:#C4673F;--pr2:#E39A5B;--on:#FFF8EE;--dg:#C0463B;--desk:#E4DAC7;--gl:rgba(255,250,241,.8);--sp:cubic-bezier(.34,1.56,.64,1);--ez:cubic-bezier(.2,.8,.2,1);--sh:0 1px 2px #2e28220d,0 8px 22px #2e282214;--sh2:0 2px 6px #2e282214,0 18px 38px #2e282224}
+@font-face{font-family:"Google Sans";src:url(fonts/GoogleSans-var.woff) format("woff");font-weight:400 700;font-style:normal;font-display:block}
+:root{--ff:"Google Sans",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;--bg:#F6F0E6;--sf:#FFFAF1;--sa:#EDE4D3;--ol:#D9CDB8;--tx:#2E2822;--mu:#7B6F61;--pr:#C4673F;--pr2:#E39A5B;--on:#FFF8EE;--dg:#C0463B;--desk:#E4DAC7;--gl:rgba(255,250,241,.8);--sp:cubic-bezier(.34,1.56,.64,1);--ez:cubic-bezier(.2,.8,.2,1);--sh:0 1px 2px #2e28220d,0 8px 22px #2e282214;--sh2:0 2px 6px #2e282214,0 18px 38px #2e282224}
 :root[data-t=dark]{--bg:#1E1A16;--sf:#28231E;--sa:#332D26;--ol:#473F35;--tx:#F1E9DB;--mu:#A89C8B;--pr:#E08C66;--pr2:#C4673F;--on:#1E1A16;--dg:#E0675C;--desk:#14110E;--gl:rgba(40,35,30,.78);--sh:0 1px 2px #0005,0 8px 22px #0004;--sh2:0 2px 6px #0006,0 18px 38px #0007}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{background:var(--bg)}
-html,body{margin:0;height:100%;color:var(--tx);font:16px/1.4 -apple-system,"SF Pro Text",system-ui,"Nunito",sans-serif;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
+html,body{margin:0;height:100%;color:var(--tx);font:16px/1.4 var(--ff);-webkit-font-smoothing:antialiased;overscroll-behavior:none}
 body{background:transparent}
 body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(60% 38% at 100% 0,color-mix(in srgb,var(--pr) 17%,transparent),transparent 72%),radial-gradient(55% 34% at 0 42%,color-mix(in srgb,var(--pr2) 12%,transparent),transparent 72%)}
 svg{display:block}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;transition:transform .3s var(--sp),background .2s,opacity .2s,box-shadow .3s,color .2s,border-color .2s}
 button:active{transform:scale(.92)}
 [hidden]{display:none!important}
-h2{margin:0 0 14px;font:800 21px system-ui;letter-spacing:-.01em}
+h2{margin:0 0 14px;font:800 21px var(--ff);letter-spacing:-.01em}
 .btn,.chip,.tile,.opt,.bt,.mb,.sbt,.fab,#top .ib{overflow:hidden}
 .btn,.chip,.tile,.opt,.bt,.mb,.sbt,#top .ib{position:relative}
 .rp{position:absolute;border-radius:50%;background:currentColor;opacity:.2;transform:scale(0);animation:rp .6s var(--ez) forwards;pointer-events:none}
@@ -28,8 +29,8 @@ h2{margin:0 0 14px;font:800 21px system-ui;letter-spacing:-.01em}
 header{display:flex;align-items:center;justify-content:space-between;margin:0 -18px 8px;padding:max(12px,env(safe-area-inset-top)) 18px 10px;position:sticky;top:0;z-index:5;background:var(--gl);-webkit-backdrop-filter:saturate(1.6) blur(22px);backdrop-filter:saturate(1.6) blur(22px)}
 .wm,.fh{display:flex;align-items:center;gap:12px}
 .fh{gap:4px}
-.wm b{display:block;font:800 26px/1 Georgia,"Times New Roman",serif;letter-spacing:.5px}
-.fh b{display:block;font:800 22px system-ui}
+.wm b{display:block;font:700 26px/1 var(--ff);letter-spacing:.5px}
+.fh b{display:block;font:800 22px var(--ff)}
 .wm small,.fh small{display:block;margin-top:3px;font-size:12px;font-weight:600;color:var(--mu)}
 .lg{width:44px;height:44px;border-radius:15px;display:grid;place-items:center;flex:none;color:#fff;background:linear-gradient(135deg,var(--pr2),var(--pr));box-shadow:0 6px 16px color-mix(in srgb,var(--pr) 38%,transparent),inset 0 1px 0 #ffffff55}
 .ib{width:48px;height:48px;border-radius:24px;display:grid;place-items:center}
@@ -40,10 +41,10 @@ header{display:flex;align-items:center;justify-content:space-between;margin:0 -1
 .q{width:100%;height:50px;border-radius:25px;border:1.5px solid transparent;background:var(--sf);box-shadow:var(--sh);color:var(--tx);padding:0 46px;font:inherit;outline:0;transition:border-color .25s,box-shadow .35s var(--ez),transform .4s var(--sp)}
 .q:focus{border-color:var(--pr);box-shadow:0 0 0 4px color-mix(in srgb,var(--pr) 16%,transparent),var(--sh2);transform:scale(1.012)}
 .xq{position:absolute;right:6px;top:5px;width:40px;height:40px;border-radius:20px;display:grid;place-items:center;color:var(--mu)}
-.sec{display:flex;align-items:center;gap:8px;margin:22px 2px 12px;font:800 12px system-ui;letter-spacing:.09em;text-transform:uppercase;color:var(--mu)}
+.sec{display:flex;align-items:center;gap:8px;margin:22px 2px 12px;font:800 12px var(--ff);letter-spacing:.09em;text-transform:uppercase;color:var(--mu)}
 .sec>svg{width:18px;height:18px;color:var(--pr)}
 .seg{display:inline-flex;gap:2px;padding:3px;border-radius:18px;background:var(--sa);margin-left:auto;text-transform:none;letter-spacing:0}
-.seg button{height:30px;padding:0 11px;border-radius:15px;display:flex;align-items:center;gap:5px;font:700 12px system-ui;color:var(--mu)}
+.seg button{height:30px;padding:0 11px;border-radius:15px;display:flex;align-items:center;gap:5px;font:700 12px var(--ff);color:var(--mu)}
 .seg button.on{background:var(--sf);color:var(--pr);box-shadow:var(--sh)}
 .rail{display:flex;gap:14px;overflow-x:auto;margin:0 -18px;padding:4px 18px 16px;scroll-snap-type:x proximity;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .rail::-webkit-scrollbar{display:none}
@@ -56,7 +57,7 @@ header{display:flex;align-items:center;justify-content:space-between;margin:0 -1
 .doc:active{transform:scale(.96)}
 .pp{position:relative;width:100%;border-radius:12px;overflow:hidden;background-color:#fff;box-shadow:inset 0 0 0 1px #00000014,0 2px 6px #00000012}
 .pp:not(.pdf)::after{content:'';position:absolute;right:0;top:0;width:22px;height:22px;background:linear-gradient(225deg,var(--sf) 50%,#0000002b 50%);border-radius:0 0 0 10px}
-.bd{position:absolute;left:8px;bottom:8px;display:flex;align-items:center;gap:4px;padding:3px 8px 3px 6px;border-radius:10px;font:800 10px system-ui;color:#fff;background:linear-gradient(135deg,#E5584B,#C0392B);box-shadow:0 2px 6px #c0392b66}
+.bd{position:absolute;left:8px;bottom:8px;display:flex;align-items:center;gap:4px;padding:3px 8px 3px 6px;border-radius:10px;font:800 10px var(--ff);color:#fff;background:linear-gradient(135deg,#E5584B,#C0392B);box-shadow:0 2px 6px #c0392b66}
 .wp{position:absolute;inset:0;display:grid;place-items:center;color:#c0392b44}
 .mt{display:flex;align-items:center;gap:4px;margin-top:8px;padding-left:2px}
 .mb{width:36px;height:36px;border-radius:18px;display:grid;place-items:center;color:var(--mu);flex:none}
@@ -80,12 +81,12 @@ header{display:flex;align-items:center;justify-content:space-between;margin:0 -1
 #modal.out .sheet{animation:none;transform:translateY(100%);transition:transform .22s cubic-bezier(.5,0,.8,.5)}
 .gr{width:40px;height:5px;border-radius:3px;background:var(--ol);margin:0 auto 16px;position:relative}.gr::before{content:'';position:absolute;inset:-16px -40px}
 .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:4px 0}
-.tile{display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 6px 14px;border-radius:24px;background:var(--sa);font:700 13px system-ui;animation:in .5s var(--sp) backwards;animation-delay:calc(var(--i,0)*70ms)}
+.tile{display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 6px 14px;border-radius:24px;background:var(--sa);font:700 13px var(--ff);animation:in .5s var(--sp) backwards;animation-delay:calc(var(--i,0)*70ms)}
 .tile .ti{width:56px;height:56px;border-radius:19px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--a),var(--b));box-shadow:0 8px 18px color-mix(in srgb,var(--b) 42%,transparent),inset 0 1px 0 #ffffff66}
 .row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
 .chip{height:40px;padding:0 16px;border-radius:20px;border:1.5px solid var(--ol);display:inline-flex;align-items:center;gap:7px;font-weight:600}
 .chip.on{background:var(--pr);color:var(--on);border-color:var(--pr)}
-.opt{flex:1;min-width:76px;min-height:74px;padding:10px 6px;border-radius:20px;background:var(--sa);border:2px solid transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font:700 12px system-ui;color:var(--mu)}
+.opt{flex:1;min-width:76px;min-height:74px;padding:10px 6px;border-radius:20px;background:var(--sa);border:2px solid transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font:700 12px var(--ff);color:var(--mu)}
 .opt.on{border-color:var(--pr);color:var(--pr);background:color-mix(in srgb,var(--pr) 10%,var(--sf))}
 .opt .rs{display:block;border-radius:3px;border:2px solid currentColor}
 .sw{width:38px;height:38px;border-radius:19px;border:2px solid #0000001a;box-shadow:inset 0 1px 0 #ffffff55}.sw.on{outline:3px solid var(--pr);outline-offset:2px;transform:scale(1.08)}
@@ -95,12 +96,12 @@ header{display:flex;align-items:center;justify-content:space-between;margin:0 -1
 .ir{display:flex;align-items:center;gap:10px}.bub{width:50px;height:50px;border-radius:17px;flex:none;display:grid;place-items:center;color:#fff;transition:background .3s}
 .pvbox{display:grid;place-items:center;padding:18px;margin-bottom:12px;border-radius:24px;background:var(--desk);min-height:250px}
 .prev{border-radius:5px;box-shadow:0 12px 30px #0000003d,0 0 0 1px #0000001a;transition:width .45s var(--sp),height .45s var(--sp),background-color .25s}
-.lb{display:flex;align-items:center;gap:7px;margin:12px 0 4px;font:700 13px system-ui;color:var(--mu)}.lb svg{width:18px;height:18px;color:var(--pr)}
+.lb{display:flex;align-items:center;gap:7px;margin:12px 0 4px;font:700 13px var(--ff);color:var(--mu)}.lb svg{width:18px;height:18px;color:var(--pr)}
 .rw{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px;border-bottom:1px solid color-mix(in srgb,var(--ol) 60%,transparent)}
 .rl{display:flex;align-items:center;gap:12px;font-weight:600}.rb{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--pr) 14%,transparent);color:var(--pr);flex:none}
 .about{display:flex;gap:14px;align-items:center;margin:18px 0 4px;padding:16px;border-radius:24px;background:linear-gradient(135deg,color-mix(in srgb,var(--pr) 16%,var(--sf)),var(--sa))}.about p{margin:4px 0 0;font-size:13px;color:var(--mu)}
 .vc{margin:10px 0;padding:14px 16px;border-radius:20px;background:var(--sa)}.vc b{font-size:15px}.vc p{margin:6px 0 0;font-size:13.5px;line-height:1.5;color:var(--mu)}
-.nw{margin-left:8px;padding:2px 8px;border-radius:9px;font:800 10px system-ui;background:var(--pr);color:#fff;vertical-align:2px}
+.nw{margin-left:8px;padding:2px 8px;border-radius:9px;font:800 10px var(--ff);background:var(--pr);color:#fff;vertical-align:2px}
 .tg{width:51px;height:31px;border-radius:16px;background:var(--ol);position:relative;transition:background .25s;flex:none}.tg::after{content:'';position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 2px 4px #0004;transition:transform .3s var(--sp)}.tg.on{background:#34C759}.tg.on::after{transform:translateX(20px)}
 #snack{position:fixed;left:16px;right:16px;bottom:104px;max-width:520px;margin:auto;background:var(--tx);color:var(--bg);border-radius:20px;padding:12px 16px;display:none;justify-content:space-between;align-items:center;z-index:30;box-shadow:var(--sh2)}#snack.on{display:flex;animation:up .4s var(--sp)}#snack button{color:#E2A93B;font-weight:800}
 /* editor */
@@ -112,13 +113,13 @@ header{display:flex;align-items:center;justify-content:space-between;margin:0 -1
 #stage{position:absolute;top:calc(52px + env(safe-area-inset-top));bottom:0;left:0;right:0;background:var(--desk);overflow:hidden;touch-action:none}
 #stage canvas{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
 #world{position:absolute;left:0;top:0;transform-origin:0 0;pointer-events:none;will-change:transform}
-.ob{position:absolute;transform-origin:50% 50%;pointer-events:none;font-family:system-ui,sans-serif;line-height:1.3}
+.ob{position:absolute;transform-origin:50% 50%;pointer-events:none;font-family:var(--ff);line-height:1.3}
 .ob.note{padding:28px;box-shadow:0 4px 12px #0002}.ob.img img{width:100%;height:100%;display:block;pointer-events:none}
 .ob .tx{white-space:pre-wrap;word-break:break-word;min-height:1.3em}
 .ob textarea{pointer-events:auto;width:100%;border:0;outline:0;background:transparent;font:inherit;color:inherit;resize:none;padding:0;display:block;overflow:hidden;user-select:text;-webkit-user-select:text}
 .ob.note textarea{height:100%}
 #ring{position:absolute;border:2px solid var(--pr);border-radius:50%;pointer-events:none;display:none;transform:translate(-50%,-50%);z-index:4}
-#pgi{position:absolute;top:calc(62px + env(safe-area-inset-top));left:50%;transform:translate(-50%,-8px);padding:6px 14px;border-radius:16px;font:800 13px system-ui;box-shadow:var(--sh);opacity:0;pointer-events:none;transition:opacity .25s,transform .4s var(--sp);z-index:5}#pgi.on{opacity:1;transform:translate(-50%,0)}
+#pgi{position:absolute;top:calc(62px + env(safe-area-inset-top));left:50%;transform:translate(-50%,-8px);padding:6px 14px;border-radius:16px;font:800 13px var(--ff);box-shadow:var(--sh);opacity:0;pointer-events:none;transition:opacity .25s,transform .4s var(--sp);z-index:5}#pgi.on{opacity:1;transform:translate(-50%,0)}
 #tools{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom));display:flex;padding:5px 7px;border:1px solid color-mix(in srgb,var(--ol) 70%,transparent);border-radius:34px;z-index:6;max-width:98vw;box-shadow:0 12px 34px #0000002b}
 #tools .ib{position:relative;width:46px;height:50px;border-radius:23px;transition:transform .4s var(--sp),opacity .2s,background .25s,color .2s;opacity:.62}
 #tools .ib.on{transform:translateY(-8px) scale(1.06);opacity:1;color:var(--pr);background:color-mix(in srgb,var(--pr) 14%,transparent)}
@@ -201,9 +202,16 @@ header{padding-top:max(6px,env(safe-area-inset-top));padding-bottom:6px}
 #tsn{position:absolute;right:12px;top:calc(62px + env(safe-area-inset-top));width:46px;height:46px;border-radius:23px;display:grid;place-items:center;z-index:6;color:var(--mu);border:1px solid color-mix(in srgb,var(--ol) 70%,transparent);background:var(--gl);-webkit-backdrop-filter:saturate(1.6) blur(22px);backdrop-filter:saturate(1.6) blur(22px);box-shadow:var(--sh)}
 #tsn.act{background:var(--pr);color:var(--on);border-color:var(--pr)}
 #tsn.dim{opacity:.45}
+/* thanh công cụ thu gọn: các nút co dần về nút Con trỏ (nút giữ nguyên trong DOM, chỉ đổi lớp .cp) */
+#tools{gap:0!important}
+#tools .ib{margin:0 1px;padding:0;overflow:hidden;flex:none;transition:width .42s var(--ez),margin .42s var(--ez),opacity .26s ease calc(var(--n,0)*26ms),scale .5s var(--sp) calc(var(--n,0)*26ms),background .2s,color .2s}
+#tools.cp .ib:not([data-k=select]){width:0!important;margin:0!important;opacity:0;scale:.3;pointer-events:none;visibility:hidden;transition:width .4s var(--ez),margin .4s var(--ez),opacity .14s ease,scale .3s var(--ez),visibility 0s linear .4s}
+#tools .ib.tbp{animation:tbpop .5s var(--sp)}
+@keyframes tbpop{0%{scale:.78}60%{scale:1.1}100%{scale:1}}
+#tools.nt,#tools.nt .ib{transition:none!important}
 @media(max-height:520px) and (orientation:landscape){#tsn{top:calc(50px + env(safe-area-inset-top));width:42px;height:42px}}
 </style></head><body>
-<div id="splash" aria-hidden="true"><svg viewBox="0 0 300 120"><text x="150" y="70" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-weight="700" font-size="58" letter-spacing="1"><tspan style="--i:0">N</tspan><tspan style="--i:1">O</tspan><tspan style="--i:2">T</tspan><tspan style="--i:3">E</tspan><tspan style="--i:4">R</tspan><tspan style="--i:5">I</tspan></text><path class="ul" d="M62 94 C 110 78, 190 110, 240 88"/></svg></div>
+<div id="splash" aria-hidden="true"><svg viewBox="0 0 300 120"><text x="150" y="70" text-anchor="middle" font-family="'Google Sans',system-ui,sans-serif" font-weight="700" font-size="58" letter-spacing="1"><tspan style="--i:0">N</tspan><tspan style="--i:1">O</tspan><tspan style="--i:2">T</tspan><tspan style="--i:3">E</tspan><tspan style="--i:4">R</tspan><tspan style="--i:5">I</tspan></text><path class="ul" d="M62 94 C 110 78, 190 110, 240 88"/></svg></div>
 <script>(function(){var s=document.getElementById('splash');if(!s)return;function bye(){if(s.__d)return;s.__d=1;s.classList.add('hide');setTimeout(function(){s.remove()},420)}setTimeout(bye,2300);s.addEventListener('click',bye)})()</script>
 <div id="home"></div>
 <div id="ed" hidden>
@@ -216,7 +224,7 @@ header{padding-top:max(6px,env(safe-area-inset-top));padding-bottom:6px}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
 'use strict';
-const VER='1.8.0',SW=1200,$=s=>document.querySelector(s);
+const VER='1.9.0',SW=1200,$=s=>document.querySelector(s);
 const h=(t,a,...c)=>{const e=document.createElement(t);if(a)for(const k in a){if(k==='class')e.className=a[k];else if(k==='style')e.style.cssText=a[k];else if(k in e)e[k]=a[k];else e.setAttribute(k,a[k])}e.append(...c.flat().filter(x=>x!=null));return e};
 const IC={sel:'<path d="M7 3.5v14.2l3.6-3.4 2.4 5.2 2.4-1.1-2.4-5.1 5-.4z"/>',pen:'<path d="M4 20l1.2-4.6L16.6 4a2.1 2.1 0 0 1 3 0l.4.4a2.1 2.1 0 0 1 0 3L8.6 18.8z"/><path d="M14.5 6.2l3.3 3.3"/>',hl:'<path d="M14.5 4.5l5 5-8.2 8.2-5-5z"/><path d="M6.3 12.7L4.5 18.5l1 1 5.8-1.8"/><path d="M13.5 20.5H20"/>',er:'<path d="M4.6 14.4l8.5-8.5a2 2 0 0 1 2.8 0l3.3 3.3a2 2 0 0 1 0 2.8L12 19.4H8.6z"/><path d="M8.5 10l5.9 5.9"/><path d="M13 20.5h7"/>',tx:'<path d="M5 7V5h14v2"/><path d="M12 5v14"/><path d="M9 19h6"/>',im:'<rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="9" cy="10" r="1.5"/><path d="M3 17l5-5 4 4 3-3 6 5"/>',nt:'<path d="M5 4h14v10l-6 6H5z"/><path d="M13 20v-6h6"/>',un:'<path d="M9 5L4 10l5 5"/><path d="M4 10h10a5 5 0 0 1 0 10h-3"/>',re:'<path d="M15 5l5 5-5 5"/><path d="M20 10H10a5 5 0 0 0 0 10h3"/>',ft:'<path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/>',bk:'<path d="M15 5l-7 7 7 7"/>',pl:'<path d="M12 5v14M5 12h14"/>',mo:'<circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/>',st:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
 se:'<circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>',tr:'<path d="M4 7h16"/><path d="M9 7V4.5h6V7"/><path d="M6.5 7l1 13h9l1-13"/><path d="M10 11v5M14 11v5"/>',ed:'<path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>',fo:'<path d="M3.5 7.5a2 2 0 0 1 2-2H9l2 2.5h7.5a2 2 0 0 1 2 2v7.5a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/>',fm:'<path d="M3.5 7.5a2 2 0 0 1 2-2H9l2 2.5h7.5a2 2 0 0 1 2 2v7.5a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/><path d="M9 13.5h6M12.5 11l2.5 2.5-2.5 2.5"/>',fp:'<path d="M3.5 7.5a2 2 0 0 1 2-2H9l2 2.5h7.5a2 2 0 0 1 2 2v7.5a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/><path d="M12 11v5M9.5 13.5h5"/>',
@@ -243,6 +251,8 @@ const hap=()=>T.hap&&navigator.vibrate&&navigator.vibrate(8);
 const uid=()=>Math.random().toString(36).slice(2,10);
 const norm=s=>(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase();
 const lum=c=>{const n=parseInt(c.slice(1),16);return(.299*(n>>16)+.587*(n>>8&255)+.114*(n&255))/255};
+/* font: đo lại chiều cao chữ/nút khi Google Sans tải xong */
+if(document.fonts){document.fonts.load('400 16px "Google Sans"');document.fonts.load('700 16px "Google Sans"');document.fonts.ready.then(()=>{if(S){renderObjs();req()}})}
 /* storage */
 const idb=new Promise((r,j)=>{const q=indexedDB.open('noteri',1);q.onupgradeneeded=()=>q.result.createObjectStore('k');q.onsuccess=()=>r(q.result);q.onerror=()=>j(q.error)});
 const tx=async(m,f)=>{const d=await idb;return new Promise((res,rej)=>{const q=f(d.transaction('k',m).objectStore('k'));q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)})};
@@ -320,6 +330,7 @@ function settings(){const b=h('div'),vc=(v,L)=>h('div',{class:'vc'},h('b',{textC
   tgl('Chỉ bút được vẽ sau khi đã dùng bút','stylus',rs,'pen'),tgl('Rung nhẹ','hap',rs,'vb'),tgl('Khóa trang vào giữa khi thả tay','lk',rs,'lk'),
   h('div',{class:'about'},h('div',{},h('b',{textContent:'NOTERI'}),h('ul',{},['Phiên bản '+VER+'.','Ghi chú, vẽ tay, chú thích PDF và sơ đồ tư duy.','Dữ liệu lưu trên thiết bị (IndexedDB); không tài khoản, không quảng cáo, không thu thập dữ liệu.','Cần kết nối mạng ở lần dùng đầu tiên để tải thư viện đọc PDF.'].map(t=>h('li',{textContent:t}))))),
   h('div',{class:'lb',innerHTML:ic('spk',18)+'Có gì mới'}),
+  vc('1.9.0',['Toàn bộ ứng dụng dùng phông Google Sans, nhúng sẵn trong ứng dụng nên vẫn chạy khi không có mạng; hỗ trợ đầy đủ tiếng Việt.','Chữ trong trang (hộp chữ, ghi chú, nút sơ đồ, tên nhóm) dùng cùng phông; vị trí hít chữ vào dòng kẻ được tính theo đúng số đo của phông.','Thanh công cụ có hiệu ứng khi chọn Con trỏ: các nút thu dần về nút Con trỏ, mở rộng lại thì lần lượt hiện ra.']),
   vc('1.8.0',['Mũi tên sơ đồ tư duy: nét mảnh hơn, đầu mũi tên nhỏ gọn theo độ dày, góc của đường gấp khúc được bo tròn.','Chỉnh độ dày mũi tên: chọn một mũi tên để dùng thanh trượt; bảng Sơ đồ tư duy đặt độ dày mặc định cho mũi tên mới.','Nhóm: kéo một nút vào trong nút khác sẽ có gợi ý nhóm, thả tay để tạo nhóm rồi đặt tên. Nhóm hiện khung mờ bao quanh, tên nằm phía trên.','Kéo viền hoặc tên nhóm để di chuyển cả nhóm; nhấn đúp vào tên để đổi tên; kéo tay nắm góc dưới phải để đổi kích thước.','Hộp chữ, ghi chú, nút sơ đồ và tên nhóm đều cần nhấn đúp để sửa chữ; chạm một lần chỉ chọn.','Công cụ Chữ có nút hít chữ vào dòng kẻ ngang: bật thì chữ nằm trên đường kẻ của trang (kẻ ngang hoặc ô vuông), hít nhẹ và tức thì; tắt thì như cũ.']),
   vc('1.7.1',['Sửa lệch vùng tô sáng của công cụ đang chọn trên thanh công cụ; các nút có kích thước đồng đều.','Chọn công cụ Con trỏ thu thanh công cụ còn một nút ở giữa; chạm lại nút đó để mở rộng.','Đóng bàn phím hoặc thoát khi đang tạo nút sơ đồ hoặc hộp chữ mà chưa nhập gì thì hủy việc tạo đó.','Khi bảng bút, tẩy hoặc sơ đồ tư duy đang mở, chạm vào trang chỉ đóng bảng, không tạo nét vẽ.']),
   vc('1.7.0',['Thêm công cụ Sơ đồ tư duy trên thanh công cụ; nhấn lần nữa hoặc giữ nút để mở bảng chế độ.','Nút sơ đồ: kéo di chuyển, đổi độ rộng, đổi màu, nhân bản, xóa; chiều cao tự co theo nội dung.','Mũi tên nối nút: đường cong, thẳng hoặc gấp khúc; bật tắt đầu mũi tên; tự bám theo khi di chuyển nút.','Thêm nút con bằng dấu cộng ở bốn cạnh nút; kéo từ dấu cộng sang nút khác để nối, kéo ra chỗ trống để tạo nút mới và nối.','Chế độ Nối nút: kéo trực tiếp từ nút này sang nút khác.','Sắp xếp tự động dạng cây từ trái sang phải.','Sơ đồ dùng chung lịch sử Hoàn tác và lưu cùng trang, cùng bút vẽ, chữ, ảnh.','Viết lại mục Giới thiệu và Có gì mới theo dạng liệt kê; thêm README.md cho người bảo trì.']),
@@ -419,7 +430,11 @@ function mmPop(p){const M2=T.mm,rr=()=>mmPop(p),ed=()=>S.selE&&S.edges.find(e=>e
   h('div',{class:'lb',innerHTML:ic('pen',18)+'Màu nút'}),swatches(MC,MC[M2.c],c=>{M2.c=MC.indexOf(c);saveT();const o=obj(S.sel);if(o&&o.k==='node'){touch();o.c=c;commit();renderObjs()}rr()}),
   h('button',{class:'btn g',style:'width:100%;margin-top:10px',innerHTML:ic('lay',20)+'<span>Sắp xếp tự động</span>',onclick:mmLayout}))}
 let LP,LPF=0;const TL=[['select','sel','Chọn'],['pen','pen','Bút'],['hl','hl','Bút dạ'],['erase','er','Tẩy'],['text','tx','Chữ'],['img','im','Ảnh'],['note','nt','Ghi chú'],['mm','mm','Sơ đồ tư duy']];
-function tools(){const cp=S.compact&&S.tool==='select'&&!S.mm;$('#tools').classList.toggle('cp',cp);$('#tools').replaceChildren(...TL.filter(t=>!cp||t[0]==='select').map(([k,i,l])=>{const b=I(i,{'aria-label':l,title:l,class:'ib'+((k==='mm'?S.mm:S.tool===k&&!S.mm)?' on':''),onpointerdown:()=>{if(k==='mm'){clearTimeout(LP);LP=setTimeout(()=>{LPF=1;S.mm=true;S.tool='select';S.popOn='mm';S.sel=null;S.selE=null;bar();hap();document.querySelectorAll('#tools .ib').forEach((b,i)=>b.classList.toggle('on',TL[i][0]==='mm'));pop();req();setTimeout(()=>LPF=0,1500)},450)}},onpointerup:()=>clearTimeout(LP),onpointerleave:()=>clearTimeout(LP),onpointercancel:()=>clearTimeout(LP),onclick:()=>{if(LPF){LPF=0;return}if(k==='img'){$('#file').click();return}if(k==='select'){const was=S.tool==='select'&&!S.mm;S.compact=was?!S.compact:true;S.mm=false;S.tool='select';S.popOn=null;S.sel=null;S.selE=null;bar();hap();tools();pop();req();return}S.compact=false;if(k==='mm'){if(S.mm)S.popOn=S.popOn==='mm'?null:'mm';else{S.mm=true;S.tool='select';S.popOn=null;S.sel=null;S.selE=null;bar();hap()}}else if(S.tool===k&&!S.mm&&['pen','hl','erase'].includes(k))S.popOn=S.popOn?null:k;else{S.mm=false;S.tool=k;S.popOn=null;S.sel=null;S.selE=null;bar();hap()}tools();pop();req()}});if(k==='pen'||k==='hl')b.append(h('i',{class:'dot','data-k':k,style:'background:'+T[k].c}));return b}));tsnUp()}
+function tools(){const box=$('#tools'),cp=S.compact&&S.tool==='select'&&!S.mm;if(!S.tbi)box.classList.add('nt');
+ if(box.children.length!==TL.length)box.replaceChildren(...TL.map(([k,i,l],n)=>{const b=I(i,{'aria-label':l,title:l,class:'ib',onpointerdown:()=>{if(k==='mm'){clearTimeout(LP);LP=setTimeout(()=>{LPF=1;S.mm=true;S.tool='select';S.popOn='mm';S.sel=null;S.selE=null;bar();hap();document.querySelectorAll('#tools .ib').forEach((b,i)=>b.classList.toggle('on',TL[i][0]==='mm'));pop();req();setTimeout(()=>LPF=0,1500)},450)}},onpointerup:()=>clearTimeout(LP),onpointerleave:()=>clearTimeout(LP),onpointercancel:()=>clearTimeout(LP),onclick:()=>{if(LPF){LPF=0;return}if(k==='img'){$('#file').click();return}if(k==='select'){const was=S.tool==='select'&&!S.mm;S.compact=was?!S.compact:true;S.mm=false;S.tool='select';S.popOn=null;S.sel=null;S.selE=null;bar();hap();tools();pop();req();return}S.compact=false;if(k==='mm'){if(S.mm)S.popOn=S.popOn==='mm'?null:'mm';else{S.mm=true;S.tool='select';S.popOn=null;S.sel=null;S.selE=null;bar();hap()}}else if(S.tool===k&&!S.mm&&['pen','hl','erase'].includes(k))S.popOn=S.popOn?null:k;else{S.mm=false;S.tool=k;S.popOn=null;S.sel=null;S.selE=null;bar();hap()}tools();pop();req()}});if(k==='pen'||k==='hl')b.append(h('i',{class:'dot','data-k':k,style:'background:'+T[k].c}));b.dataset.k=k;b.style.setProperty('--n',n);return b}));
+ box.classList.toggle('cp',cp);TL.forEach(([k],n)=>{const b=box.children[n],hid=cp&&k!=='select';b.classList.toggle('on',k==='mm'?S.mm:S.tool===k&&!S.mm);b.tabIndex=hid?-1:0;b.setAttribute('aria-hidden',hid?'true':'false')});dots();
+ if(!S.tbi){void box.offsetWidth;box.classList.remove('nt');S.tbi=1;S.tbc=cp}else if(S.tbc!==cp){S.tbc=cp;const sl=box.children[0];sl.classList.remove('tbp');void sl.offsetWidth;sl.classList.add('tbp')}
+ tsnUp()}
 /* nút hít chữ: không cướp tiêu điểm khỏi ô đang gõ; bật/tắt áp dụng cho chữ mới và chữ đang sửa */
 $('#tsn').innerHTML=ic('snp',24);$('#tsn').onmousedown=e=>e.preventDefault();$('#tsn').onpointerdown=e=>e.preventDefault();
 $('#tsn').onclick=()=>{T.sn=!T.sn;saveT();hap();const o=S&&S.edit&&obj(S.edit);if(o&&o.k==='text'&&GSP()){touch();if(T.sn){o.sn=1;lnSnap(o)}else delete o.sn;renderObjs(o);const ta=els.get(o.id).querySelector('textarea');if(ta){ta.style.height='auto';ta.style.height=Math.max(ta.scrollHeight,o.fs*1.3)+'px';o.h=ta.scrollHeight}}tsnUp();req()};
@@ -446,7 +461,7 @@ function drawStroke(c,s){const p=s.p;c.save();c.strokeStyle=c.fillStyle=s.c;c.li
 /* ===== Hít chữ vào dòng kẻ ngang: chữ có sn:1 đặt đường cơ sở dòng đầu lên đường kẻ gần nhất; chiều cao dòng là bội của khoảng kẻ nên các dòng sau cũng nằm trên kẻ ===== */
 const GSP=()=>!S||S.pdf?0:(S.c.pattern==='ruled'||S.c.pattern==='grid')?{S:70,M:100,L:140}[S.c.sp||'M']:0;
 const lnLH=o=>{const st=GSP();return st*Math.max(1,Math.ceil((o.fs||48)*1.2/st))};
-let fmCx;const lnBase=o=>{const fs=o.fs||48,L=lnLH(o);fmCx=fmCx||document.createElement('canvas').getContext('2d');fmCx.font=fs+'px system-ui,sans-serif';const m=fmCx.measureText('Hg'),A=m.fontBoundingBoxAscent||fs*.93,D=m.fontBoundingBoxDescent||fs*.24;return(L-(A+D))/2+A};
+let fmCx,FF;const lnBase=o=>{const fs=o.fs||48,L=lnLH(o);fmCx=fmCx||document.createElement('canvas').getContext('2d');fmCx.font=fs+'px '+(FF=FF||getComputedStyle(document.documentElement).getPropertyValue('--ff'));const m=fmCx.measureText('Hg'),A=m.fontBoundingBoxAscent||fs*.93,D=m.fontBoundingBoxDescent||fs*.24;return(L-(A+D))/2+A};
 function lnSnap(o,th){const st=GSP();if(!st||!o.sn||o.k!=='text')return false;const by=o.y+lnBase(o),n=Math.max(1,Math.round(by/st))*st,d=n-by;if(th!=null&&Math.abs(d)>th)return false;o.y+=d;return true}
 function tsnUp(){const b=$('#tsn');if(!b)return;b.hidden=!(S&&S.tool==='text'&&!S.mm);b.classList.toggle('act',!!T.sn);b.classList.toggle('dim',!GSP())}
 /* objects */
