@@ -54,7 +54,7 @@ Tài liệu này dành cho người và AI tiếp tục phát triển. Đọc h�
 - Hít chữ vào dòng kẻ ngang: nút `#tsn` (góc phải trên) chỉ hiện khi chọn công cụ Chữ; trạng thái lưu ở `T.sn`; mờ đi nếu trang không có kẻ ngang/ô vuông (PDF và giấy trắng thì không có tác dụng). Chữ tạo ra khi đang bật có `sn:1`: đường cơ sở dòng đầu đặt lên đường kẻ gần nhất (`lnSnap`), chiều cao dòng là bội của khoảng kẻ (`lnLH`) nên các dòng sau cũng nằm trên kẻ. Khi kéo chữ có `sn` chỉ hít nhẹ: ngưỡng tối đa 22% khoảng kẻ và không quá 11px màn hình. Chỉ hít theo trục dọc của trang (kẻ ngang); không hít vào đường kẻ dọc của ô vuông; việc căn giữa trang và căn theo đối tượng khác vẫn là `snap()` cũ.
 - "Sắp xếp tự động": bố cục cây trái sang phải (`mmLayout`), một bước hoàn tác. Chưa cập nhật khung nhóm theo vị trí mới của nút.
 - Có thể vẽ tay, thêm mũi tên tự do bằng bút thường, hoặc trộn với sơ đồ trên cùng một trang. Không tách thành loại tài liệu riêng.
-- Chưa có: thu gọn nhánh, nhãn trên mũi tên, màu nhóm, nhóm lồng nhau được kiểm thử kỹ, kéo thả đổi cha, kiểu nút khác, xuất ảnh sơ đồ, vẽ nút/mũi tên/nhóm trong ảnh xem trước.
+- Chưa có: thu gọn nhánh, nhãn trên mũi tên, màu nhóm, nhóm lồng nhau được kiểm thử kỹ, kéo thả đổi cha, kiểu nút khác, vẽ nút/mũi tên/nhóm trong ảnh xem trước.
 
 ## Quyết định của chủ dự án (không được đảo ngược nếu chưa hỏi)
 - Không dùng gradient làm nền hay nút (đường kẻ trang giấy dùng điểm dừng cứng là chấp nhận được). Không dùng hiệu ứng phát sáng (glow). Blur/kính mờ thì được.
@@ -65,11 +65,21 @@ Tài liệu này dành cho người và AI tiếp tục phát triển. Đọc h�
 - Giới hạn kéo trang tính theo kích thước trang (không theo mức zoom) để khoảng trống kéo được bằng nhau ở mọi mức zoom. Zoom nhỏ nhất của PDF là 0.3 lần mức vừa chiều rộng.
 - Chạm hai ngón = hoàn tác, ba ngón = làm lại.
 - Màn hình chính: lưới 1 đến 5 cột chụm ngón để đổi, mỗi thư mục nhớ mức riêng; mục có thể thu gọn. Không có mục "Gần đây". Thư mục lồng nhau, có biểu tượng riêng.
-- Giọng văn trong "Giới thiệu" và "Có gì mới": chuyên nghiệp, liệt kê gạch đầu dòng, chỉ nêu đúng điều đã thay đổi. Không khoa trương.
+- Cài đặt không có mục Giới thiệu và không có nhật ký "Có gì mới". Phiên bản (`VER`, hiện 1.0) chỉ hiện là dòng chữ nhỏ mờ ở góc dưới phải của Cài đặt.
 
 - Thanh công cụ: chọn Con trỏ thì thu gọn còn một nút ở giữa (chạm lại để mở rộng). Cả 8 nút luôn nằm trong DOM; thu gọn chỉ là thêm lớp `.cp` và CSS co độ rộng các nút còn lại về 0 (có hiệu ứng, nút Con trỏ nảy nhẹ; mở rộng thì các nút hiện lần lượt). Không dựng lại nút mỗi lần gọi `tools()`, nếu không sẽ mất hiệu ứng. Lần đầu mở trình soạn dùng lớp `.nt` để không chạy hiệu ứng. Khi bảng của công cụ (bút, tẩy, sơ đồ) đang mở, chạm vào trang chỉ đóng bảng, không vẽ.
 - Tạo nút sơ đồ hoặc hộp chữ rồi thoát/đóng bàn phím mà chưa nhập gì thì hủy việc tạo (không để lại nút rỗng). Nhóm mới tạo cũng vậy: tên bắt buộc.
 - Mọi loại chữ trong trang (hộp chữ, ghi chú, nút, tên nhóm) chỉ sửa bằng nhấn đúp. Hít chữ vào kẻ phải nhẹ, chỉ theo trục ngang của dòng kẻ, không hít mạnh.
+
+## Xuất và sao lưu
+- Mã nằm thành một khối trước `/* editor */` trong `index.html` (tiền tố `x*` cho xuất, `aud*` cho âm thanh, `bk*` cho sao lưu). Tiến trình dùng `xProg()`; `P.chk()` ném `{cancel:1}` khi người dùng hủy hoặc đóng hộp.
+- Menu ba chấm của mục (`docMenu`): trang, giấy note, ảnh, PDF có nút "Xuất" (`xSheet`); ghi âm có hàng "Tải về" AAC/MP4/WAV (`audMenu`), chỉ hiện định dạng làm được (`audCaps`).
+- Xuất ảnh: `xLoad` đọc nội dung từ IndexedDB, `xCanvas` dựng lại bằng chính `mmDraw`, `drawStroke` cùng `xObj` (bản vẽ đối tượng riêng, bám CSS `.ob`). Các hàm đó đọc biến toàn cục `S`, nên `xWith(E,f)` tráo `S` bằng trạng thái giả đồng bộ rồi trả lại; không được `await` bên trong `xWith`. Bút dạ (multiply) vẽ vào lớp riêng rồi ghép lên, đúng như trên màn hình.
+- Phạm vi: `in` = đúng mép trang/PDF/ảnh; `all` = "Toàn bộ vùng vẽ" (khung bao mọi nét, đối tượng, mũi tên, thêm lề, nền bàn làm việc quanh trang). Với PDF nhiều trang, nội dung ngoài lề gắn vào trang theo tâm (trang đầu/cuối nhận phần thừa phía trên/dưới). Độ phân giải tối đa theo `PB*.6` điểm ảnh và cạnh 15000px; thiếu bộ nhớ thì tự giảm 30% và thử lại (`xShot`).
+- PDF xuất ra: mỗi trang là một ảnh JPEG toàn trang (`xPdfBuild`, tự ghi PDF, không thêm thư viện); kích thước trang theo trang PDF gốc. Chữ trong PDF xuất ra không chọn được.
+- Âm thanh: giữ nguyên nếu đã đúng định dạng; còn lại giải mã bằng `OfflineAudioContext` (44,1 kHz nếu ≤ 2200 giây, 22,05 kHz nếu ≤ 4500 giây, dài hơn thì ẩn nút chuyển đổi) rồi WAV tự ghi, hoặc AAC bằng WebCodecs `AudioEncoder` (kiểm bằng `isConfigSupported`) đóng gói ADTS (`.aac`) hoặc MP4 tự ghép (`mp4Mux`).
+- Tệp `.noteri`: 8 byte `NOTERI`,1,0 rồi các mục `[loại u8][độ dài khóa u16][độ dài mime u16][kích thước u64][khóa][mime][dữ liệu]`; mục đầu `manifest` (JSON: `scope` 'all'|'folder', `folders`, `docs`, `set` = cài đặt localStorage), mục cuối `end` `{n}` để phát hiện tệp cụt. Khóa dữ liệu trùng khóa IndexedDB (`d:`, `p:`, `i:`, `a:`, `bg`); `r:` không lưu. Đọc bằng `file.slice` nên không nạp cả tệp vào bộ nhớ.
+- Khôi phục: "Thêm vào hiện có" cấp id mới cho mọi thư mục/mục và đặt vào vị trí đang mở (`cur`); lỗi hoặc hủy thì xóa các khóa đã ghi. "Thay thế tất cả" (chỉ với bản sao lưu toàn bộ) ghi dữ liệu mới trước, đổi `meta`, rồi mới xóa khóa cũ, cuối cùng tải lại trang. Sao lưu riêng một thư mục (gồm thư mục con) ở nút trong hộp sửa thư mục.
 
 ## Chuyển động
 - Dùng thuộc tính riêng `scale`, `translate`, `rotate`, `opacity` trong keyframes để không đè lên `transform` đặt inline (đối tượng trong trang dùng `transform` để xoay/lật).
@@ -91,10 +101,9 @@ Tài liệu này dành cho người và AI tiếp tục phát triển. Đọc h�
 
 ## Quy trình phát hành (bắt buộc)
 1. Tăng `VER` trong `index.html` (vá lỗi: z; tính năng: y; thay đổi lớn: x).
-2. Thêm mục `vc('x.y.z',[...])` ở đầu danh sách "Có gì mới" trong `settings()`: mỗi dòng một thay đổi, thể hiện đúng điều đã làm.
-3. Đổi tên cache trong `sw.js` (`noteri-vN`) để máy cũ nhận bản mới.
-4. Chạy kiểm tra cú pháp (`node --check` trên phần script) và thử thủ công các luồng bên dưới.
-5. Cập nhật README nếu đổi kiến trúc, định dạng dữ liệu hoặc quyết định sản phẩm.
+2. Đổi tên cache trong `sw.js` (`noteri-vN`) để máy cũ nhận bản mới.
+3. Chạy kiểm tra cú pháp (`node --check` trên phần script) và thử thủ công các luồng bên dưới.
+4. Cập nhật README nếu đổi kiến trúc, định dạng dữ liệu hoặc quyết định sản phẩm.
 
 ## Kiểm tra thủ công tối thiểu
 - Mở trang mới ở 5 tỉ lệ: nằm giữa màn hình. Pinch khi đang chọn bút. Vẽ, hoàn tác, làm lại.
@@ -105,4 +114,4 @@ Tài liệu này dành cho người và AI tiếp tục phát triển. Đọc h�
 - Tạo thư mục trong thư mục, nút quay lại điện thoại lùi từng cấp, xoay ngang.
 
 ## Hướng phát triển
-Thu gọn nhánh sơ đồ, nhãn mũi tên, màu nhóm, xuất PNG/PDF, sao lưu/khôi phục, định dạng chữ Markdown, chọn vùng bằng lasso, bảng chọn đóng bằng nút quay lại điện thoại.
+Thu gọn nhánh sơ đồ, nhãn mũi tên, màu nhóm, định dạng chữ Markdown, chọn vùng bằng lasso, bảng chọn đóng bằng nút quay lại điện thoại.
